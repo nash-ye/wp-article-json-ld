@@ -16,7 +16,7 @@ function add_article_json_ld_post_type_support() {
 }
 ```
 
-## WP Filters
+## WordPress Filters
 
 - `ArticleJsonLd\post_json_ld_data` A filter for a post JSON-LD data.
 - `ArticleJsonLd\post_author_json_ld_data` A filter for a post author JSON-LD data.
@@ -24,3 +24,6 @@ function add_article_json_ld_post_type_support() {
 
 ## Requirements
 The plugin requires PHP 5.4+ and WordPress 4.4+.
+
+## Credits
+Thanks to [Arageek](http://www.arageek.com) website, for the approval to publish this plugin as a free open-source project.
