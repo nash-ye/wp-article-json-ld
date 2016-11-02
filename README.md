@@ -1,9 +1,10 @@
 # Article JSON-LD
 
-A simple and clean solution to add Schema.org microdata as a JSON-LD script on your site posts.
+Article JSON-LD, yet another solution to add Schema.org microdata as a JSON-LD script on your site posts. it will automatically insert the JSON-LD script in your site `<head>` tag.
 
-## Usage
-Install the plugin like any other WordPress plugin, it will automatically insert the JSON-LD script in your site `<head>` tag, By default it supports the `post` post-type. Add support for other custom-post-types by a code like this:
+## Custom-Post-Types Support
+By default the plugin supports the `post` post-type, add support for other custom-post-types by a code snippet as the example below:
+
 ```php
 add_action( 'init', 'add_article_json_ld_post_type_support', 15 );
 
@@ -22,4 +23,4 @@ function add_article_json_ld_post_type_support() {
 - `ArticleJsonLd\post_publisher_json_ld_data` A filter for a post publisher JSON-LD data.
 
 ## Requirements
-WP Article JSON-LD requires PHP 5.4+.
+The plugin requires PHP 5.4+ and WordPress 4.4+.
