@@ -5,7 +5,7 @@ Plugin URI: https://github.com/nash-ye/wp-article-json-ld
 Description: A simple and clean solution to add Schema.org microdata as a JSON-LD script on your site posts.
 Author: Nashwan Doaqan
 Author URI: http://nashwan-d.com
-Version: 0.2
+Version: 0.2.1
 */
 
 namespace ArticleJsonLd;
@@ -35,6 +35,8 @@ function singular_post_json_ld() {
 }
 
 /**
+ * Get post JSON-LD script.
+ *
  * @return string
  * @since 0.1
  */
@@ -52,6 +54,8 @@ function get_post_json_ld( $post = null ) {
 }
 
 /**
+ * Get post JSON-LD data.
+ *
  * @return array
  * @since 0.1
  */
@@ -71,9 +75,13 @@ function get_post_json_ld_data( $post = null ) {
     $data['@id'] = "#post-{$post->ID}";
     $data['@type'] = 'Article';
 
-    $data['headline'] = $post->post_title;
-    $data['url'] = get_permalink( $post );
+    $data['headline'] = get_the_title( $post );
+    $data['url'] = get_the_permalink( $post );
     $data['mainEntityOfPage'] = true;
+
+    if ( has_excerpt( $post ) ) {
+	$data['description'] = get_the_excerpt( $post );
+    }
 
     $post_author = get_post_author_json_ld_data( $post );
     if ( ! empty( $post_author ) ) {
@@ -104,8 +112,8 @@ function get_post_json_ld_data( $post = null ) {
 	}
     }
 
-    $data['datePublished'] = get_the_date( 'Y-m-d', $post );
-    $data['dateModified'] = get_the_modified_date( 'Y-m-d', $post );
+    $data['datePublished'] = get_the_date( 'c', $post );
+    $data['dateModified'] = get_the_modified_date( 'c', $post );
 
     $post_thumbnail_id = get_post_thumbnail_id( $post );
     if ( ! empty( $post_thumbnail_id ) ) {
@@ -125,6 +133,8 @@ function get_post_json_ld_data( $post = null ) {
 }
 
 /**
+ * Get post author JSON-LD data.
+ *
  * @return array
  * @since 0.2
  */
@@ -150,6 +160,8 @@ function get_post_author_json_ld_data( $post = null ) {
 }
 
 /**
+ * Get post publisher JSON-LD data.
+ *
  * @return array
  * @since 0.1
  */
@@ -161,13 +173,12 @@ function get_post_publisher_json_ld_data( $post = null ) {
 	return $data;
     }
 
+    /* WordPress SEO plugin integration */
     if ( defined( 'WPSEO_VERSION' ) ) {
-	$data['@type'] = '';
-	$data['url'] = home_url( '/' );
-
 	$wpseo_options = \WPSEO_Options::get_options( array( 'wpseo' ) );
 	if ( 'company' === $wpseo_options['company_or_person'] ) {
 	    $data['@type'] = 'Organization';
+	    $data['url'] = home_url( '/' );
 	    $data['name'] = $wpseo_options['company_name'];
 	    $data['logo'] = array(
 		'@type' => 'ImageObject',
@@ -175,22 +186,28 @@ function get_post_publisher_json_ld_data( $post = null ) {
 	    );
 	} elseif ( 'person' === $wpseo_options['company_or_person'] ) {
 	    $data['@type'] = 'Person';
+	    $data['url'] = home_url( '/' );
 	    $data['name'] = $wpseo_options['person_name'];
 	}
-    } else {
+    }
+
+    if ( empty( $data ) ) {
 	$data['@type'] = 'Organization';
+	$data['url'] = home_url( '/' );
 	$data['name'] = get_bloginfo( 'name', 'display' );
 
-	$custom_logo_id = get_theme_mod( 'custom_logo' );
-	if ( ! empty( $custom_logo_id ) ) {
-	    $custom_logo_src = wp_get_attachment_image_src( $custom_logo_id, 'full' );
-	    if ( ! empty( $custom_logo_src ) ) {
-		$data['logo'] = array(
-		    '@type'   => 'ImageObject',
-		    'url'    => $custom_logo_src[0],
-		    'width'  => $custom_logo_src[1],
-		    'height' => $custom_logo_src[2],
-		);
+	if ( current_theme_supports( 'custom-logo' ) ) {
+	    $custom_logo_id = get_theme_mod( 'custom_logo' );
+	    if ( ! empty( $custom_logo_id ) ) {
+		$custom_logo_src = wp_get_attachment_image_src( $custom_logo_id, 'full' );
+		if ( ! empty( $custom_logo_src ) ) {
+		    $data['logo'] = array(
+			'@type'   => 'ImageObject',
+			'url'    => $custom_logo_src[0],
+			'width'  => $custom_logo_src[1],
+			'height' => $custom_logo_src[2],
+		    );
+		}
 	    }
 	}
     }

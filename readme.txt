@@ -3,7 +3,7 @@ Contributors: alex-ye
 Tags: seo, microdata, json-ld, rich snippets, schema.org, structured data
 Requires at least: 4.4
 Tested up to: 4.6.1
-Stable tag: 0.2
+Stable tag: 0.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,12 @@ The plugin requires PHP 5.4+ and WordPress 4.4+.
 2. Use the plugin WP filters to customize the data.
 
 == Changelog ==
+
+= 0.2.1 =
+* Add the 'description' property and use `get_the_excerpt()` to get the value.
+* Use the ISO 8601 format for 'datePublished' and 'dateModified' properties.
+* Use `get_the_title()` to get the `headline' property value.
+* Some fixes and minor enhancements.
 
 = 0.2 =
 * The Initial version.
