@@ -2,7 +2,7 @@
 Contributors: alex-ye
 Tags: seo, microdata, json-ld, rich snippets, schema.org, structured data
 Requires at least: 5.0
-Tested up to: 5.4
+Tested up to: 5.5
 Stable tag: 0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
