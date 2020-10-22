@@ -34,6 +34,8 @@ function add_article_json_ld_post_type_support()
 
 You can use [Code Snippets](https://wordpress.org/plugins/code-snippets) plugin to add the code snippets to your site.
 
+An active demo is available on [Arageek](https://www.arageek.com/) articles.
+
 = Plugin's Hooks =
 
 - `ArticleJsonLd\post_json_ld_data` A filter for a post JSON-LD data.
